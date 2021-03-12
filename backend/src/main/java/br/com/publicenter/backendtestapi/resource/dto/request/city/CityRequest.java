@@ -1,15 +1,16 @@
 package br.com.publicenter.backendtestapi.resource.dto.request.city;
 
-import br.com.publicenter.backendtestapi.repository.model.State;
 import com.sun.istack.NotNull;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
+
+import javax.validation.constraints.NotBlank;
 
 @Data
+@RequiredArgsConstructor
 public abstract class CityRequest {
-
-    @NotNull
+    @NotBlank
     private String name;
     @NotNull
-    private State state;
-
+    private Long state_id;
 }

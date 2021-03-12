@@ -19,7 +19,6 @@ public class CityResource {
 
     private final CityService cityService;
 
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CityResponse save(@RequestBody @Valid CreateCityRequest request) {
@@ -46,5 +45,20 @@ public class CityResource {
     @GetMapping
     public List<CityResponse> findAll() {
         return cityService.findAll();
+    }
+
+    @GetMapping("/find-by-name")
+    public List<CityResponse> findAllByName(@RequestParam(value = "name") String name) {
+        return cityService.findAllByName(name);
+    }
+
+    @GetMapping("/find-by-state")
+    public List<CityResponse> findAllByState(@RequestParam(value = "state_id") Long state_id) {
+        return cityService.findAllByState(state_id);
+    }
+
+    @GetMapping("/find-by-parameters")
+    public List<CityResponse> findAllByNameOrState(@RequestParam(value = "name", required = false) String name, @RequestParam(value = "state_id", required = false) Long state_id) {
+        return cityService.findAllByNameOrState(name, state_id);
     }
 }

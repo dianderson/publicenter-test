@@ -19,7 +19,6 @@ public class StateResource {
 
     private final StateService stateService;
 
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public StateResponse save(@RequestBody @Valid CreateStateRequest request) {
@@ -39,6 +38,7 @@ public class StateResource {
     }
 
     @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public StateResponse findById(@PathVariable Long id) {
         return stateService.findById(id);
     }
@@ -47,4 +47,20 @@ public class StateResource {
     public List<StateResponse> findAll() {
         return stateService.findAll();
     }
+
+    @GetMapping("/find-by-name")
+    public List<StateResponse> findAllByName(@RequestParam(value = "name") String name) {
+        return stateService.findAllByName(name);
+    }
+
+    @GetMapping("/find-by-code")
+    public List<StateResponse> findAllByCode(@RequestParam(value = "code") String code) {
+        return stateService.findAllByCode(code);
+    }
+
+    @GetMapping("/find-by-parameters")
+    public List<StateResponse> findAllByNameOrCode(@RequestParam(value = "name", required = false) String name, @RequestParam(value = "code", required = false) String code) {
+        return stateService.findAllByNameOrCode(name, code);
+    }
+
 }

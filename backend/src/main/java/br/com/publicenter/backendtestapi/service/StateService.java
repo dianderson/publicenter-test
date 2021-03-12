@@ -32,6 +32,18 @@ public class StateService {
         stateRepository.deleteById(id);
     }
 
+    public List<StateResponse> findAllByName(String name) {
+        return stateRepository.findAllByNameContainingIgnoreCase(name).stream().map(StateResponse::of).collect(Collectors.toList());
+    }
+
+    public List<StateResponse> findAllByCode(String name) {
+        return stateRepository.findAllByCodeContainingIgnoreCase(name).stream().map(StateResponse::of).collect(Collectors.toList());
+    }
+
+    public List<StateResponse> findAllByNameOrCode(String name, String code) {
+        return stateRepository.findAllByNameContainingIgnoreCaseOrCodeContainingIgnoreCase(name, code).stream().map(StateResponse::of).collect(Collectors.toList());
+    }
+
     public List<StateResponse> findAll() {
         return stateRepository.findAll().stream().map(StateResponse::of).collect(Collectors.toList());
     }

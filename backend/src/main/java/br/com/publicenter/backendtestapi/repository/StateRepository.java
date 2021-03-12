@@ -9,4 +9,10 @@ import java.util.List;
 @Repository
 public interface StateRepository extends CrudRepository<State, Long> {
     List<State> findAll();
+
+    List<State> findAllByNameContainingIgnoreCase(String name);
+
+    List<State> findAllByCodeContainingIgnoreCase(String code);
+
+    List<State> findAllByNameContainingIgnoreCaseOrCodeContainingIgnoreCase(String name, String code);
 }

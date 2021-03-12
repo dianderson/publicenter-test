@@ -2,25 +2,23 @@ package br.com.publicenter.backendtestapi.repository.model;
 
 import br.com.publicenter.backendtestapi.resource.dto.request.state.CreateStateRequest;
 import br.com.publicenter.backendtestapi.resource.dto.request.state.UpdateStateRequest;
-import com.sun.istack.NotNull;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Data
 @Entity
 public class State {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull
+    @NotBlank
     @Column(unique = true)
     private String name;
-    @NotNull
+    @NotBlank
+    @Column(unique = true)
     private String code;
 
     public static State of(CreateStateRequest request) {
@@ -30,7 +28,7 @@ public class State {
         return state;
     }
 
-    public static State of(Long id,UpdateStateRequest request) {
+    public static State of(Long id, UpdateStateRequest request) {
         var state = new State();
         state.setId(id);
         state.setName(request.getName());

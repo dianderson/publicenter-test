@@ -32,6 +32,18 @@ public class CityService {
         cityRepository.deleteById(id);
     }
 
+    public List<CityResponse> findAllByName(String name) {
+        return cityRepository.findAllByNameContainingIgnoreCase(name).stream().map(CityResponse::of).collect(Collectors.toList());
+    }
+
+    public List<CityResponse> findAllByState(Long state_id) {
+        return cityRepository.findAllByStateId(state_id).stream().map(CityResponse::of).collect(Collectors.toList());
+    }
+
+    public List<CityResponse> findAllByNameOrState(String name, Long state_id) {
+        return cityRepository.findAllByNameContainingIgnoreCaseOrStateId(name, state_id).stream().map(CityResponse::of).collect(Collectors.toList());
+    }
+
     public List<CityResponse> findAll() {
         return cityRepository.findAll().stream().map(CityResponse::of).collect(Collectors.toList());
     }
