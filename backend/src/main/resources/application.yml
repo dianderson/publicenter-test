@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: jdbc:sqlserver://localhost;database=Test_API
+    username: SA
+    password: <YourNewStrong@Passw0rd>
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    generate-ddl: true
+    show-sql: true

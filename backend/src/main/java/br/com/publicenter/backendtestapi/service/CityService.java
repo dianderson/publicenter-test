@@ -4,11 +4,13 @@ import br.com.publicenter.backendtestapi.repository.CityRepository;
 import br.com.publicenter.backendtestapi.repository.model.City;
 import br.com.publicenter.backendtestapi.resource.dto.response.CityResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -16,10 +18,12 @@ public class CityService {
 
     private final CityRepository cityRepository;
 
+    @CacheEvict(value = "cityCache", allEntries = true)
     public CityResponse save(City city) {
         return CityResponse.of(cityRepository.save(city));
     }
 
+    @CacheEvict(value = "cityCache", allEntries = true)
     public CityResponse update(City city) {
         City customerToBeUpdated = cityRepository.findById(city.getId()).orElseThrow(() -> new EntityNotFoundException(String.format("City with id %s not found", city.getId())));
         customerToBeUpdated.setId(city.getId());
@@ -28,26 +32,32 @@ public class CityService {
         return CityResponse.of(cityRepository.save(customerToBeUpdated));
     }
 
+    @CacheEvict(value = "cityCache", allEntries = true)
     public void delete(Long id) {
         cityRepository.deleteById(id);
     }
 
-    public List<CityResponse> findAllByName(String name) {
-        return cityRepository.findAllByNameContainingIgnoreCase(name).stream().map(CityResponse::of).collect(Collectors.toList());
+    @Cacheable(value = "cityCache")
+    public Page<CityResponse> findAllByName(String name, Pageable pageable) {
+        return cityRepository.findAllByNameContainingIgnoreCase(name, pageable).map(CityResponse::of);
     }
 
-    public List<CityResponse> findAllByState(Long state_id) {
-        return cityRepository.findAllByStateId(state_id).stream().map(CityResponse::of).collect(Collectors.toList());
+    @Cacheable(value = "cityCache")
+    public Page<CityResponse> findAllByState(Long state_id, Pageable pageable) {
+        return cityRepository.findAllByStateId(state_id, pageable).map(CityResponse::of);
     }
 
-    public List<CityResponse> findAllByNameOrState(String name, Long state_id) {
-        return cityRepository.findAllByNameContainingIgnoreCaseOrStateId(name, state_id).stream().map(CityResponse::of).collect(Collectors.toList());
+    @Cacheable(value = "cityCache")
+    public Page<CityResponse> findAllByNameOrState(String name, Long state_id, Pageable pageable) {
+        return cityRepository.findAllByNameContainingIgnoreCaseOrStateId(name, state_id, pageable).map(CityResponse::of);
     }
 
-    public List<CityResponse> findAll() {
-        return cityRepository.findAll().stream().map(CityResponse::of).collect(Collectors.toList());
+    @Cacheable(value = "cityCache")
+    public Page<CityResponse> findAll(Pageable pageable) {
+        return cityRepository.findAll(pageable).map(CityResponse::of);
     }
 
+    @Cacheable(value = "cityCache")
     public CityResponse findById(Long id) {
         return cityRepository.findById(id)
                 .map(CityResponse::of)

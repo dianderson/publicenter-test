@@ -6,11 +6,12 @@ import br.com.publicenter.backendtestapi.resource.dto.request.state.UpdateStateR
 import br.com.publicenter.backendtestapi.resource.dto.response.StateResponse;
 import br.com.publicenter.backendtestapi.service.StateService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "/state")
@@ -44,23 +45,24 @@ public class StateResource {
     }
 
     @GetMapping
-    public List<StateResponse> findAll() {
-        return stateService.findAll();
+    @CrossOrigin(origins = "http://localhost:8081")
+    public Page<StateResponse> findAll(Pageable pageable) {
+        return stateService.findAll(pageable);
     }
 
     @GetMapping("/find-by-name")
-    public List<StateResponse> findAllByName(@RequestParam(value = "name") String name) {
-        return stateService.findAllByName(name);
+    public Page<StateResponse> findAllByName(@RequestParam(value = "name") String name, Pageable pageable) {
+        return stateService.findAllByName(name, pageable);
     }
 
     @GetMapping("/find-by-code")
-    public List<StateResponse> findAllByCode(@RequestParam(value = "code") String code) {
-        return stateService.findAllByCode(code);
+    public Page<StateResponse> findAllByCode(@RequestParam(value = "code") String code, Pageable pageable) {
+        return stateService.findAllByCode(code, pageable);
     }
 
     @GetMapping("/find-by-parameters")
-    public List<StateResponse> findAllByNameOrCode(@RequestParam(value = "name", required = false) String name, @RequestParam(value = "code", required = false) String code) {
-        return stateService.findAllByNameOrCode(name, code);
+    public Page<StateResponse> findAllByNameOrCode(@RequestParam(value = "name", required = false) String name, @RequestParam(value = "code", required = false) String code, Pageable pageable) {
+        return stateService.findAllByNameOrCode(name, code, pageable);
     }
 
 }

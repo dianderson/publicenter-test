@@ -1,18 +1,18 @@
 package br.com.publicenter.backendtestapi.repository;
 
 import br.com.publicenter.backendtestapi.repository.model.City;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
 public interface CityRepository extends CrudRepository<City, Long> {
-    List<City> findAll();
+    Page<City> findAll(Pageable pageable);
 
-    List<City> findAllByNameContainingIgnoreCase(String name);
+    Page<City> findAllByNameContainingIgnoreCase(String name, Pageable pageable);
 
-    List<City> findAllByStateId(Long state_id);
+    Page<City> findAllByStateId(Long state_id, Pageable pageable);
 
-    List<City> findAllByNameContainingIgnoreCaseOrStateId(String name, Long state_id);
+    Page<City> findAllByNameContainingIgnoreCaseOrStateId(String name, Long state_id, Pageable pageable);
 }

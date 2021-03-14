@@ -6,11 +6,12 @@ import br.com.publicenter.backendtestapi.resource.dto.request.city.UpdateCityReq
 import br.com.publicenter.backendtestapi.resource.dto.response.CityResponse;
 import br.com.publicenter.backendtestapi.service.CityService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "/city")
@@ -43,22 +44,22 @@ public class CityResource {
     }
 
     @GetMapping
-    public List<CityResponse> findAll() {
-        return cityService.findAll();
+    public Page<CityResponse> findAll(Pageable pageable) {
+        return cityService.findAll(pageable);
     }
 
     @GetMapping("/find-by-name")
-    public List<CityResponse> findAllByName(@RequestParam(value = "name") String name) {
-        return cityService.findAllByName(name);
+    public Page<CityResponse> findAllByName(@RequestParam(value = "name") String name, Pageable pageable) {
+        return cityService.findAllByName(name, pageable);
     }
 
     @GetMapping("/find-by-state")
-    public List<CityResponse> findAllByState(@RequestParam(value = "state_id") Long state_id) {
-        return cityService.findAllByState(state_id);
+    public Page<CityResponse> findAllByState(@RequestParam(value = "state_id") Long state_id, Pageable pageable) {
+        return cityService.findAllByState(state_id, pageable);
     }
 
     @GetMapping("/find-by-parameters")
-    public List<CityResponse> findAllByNameOrState(@RequestParam(value = "name", required = false) String name, @RequestParam(value = "state_id", required = false) Long state_id) {
-        return cityService.findAllByNameOrState(name, state_id);
+    public Page<CityResponse> findAllByNameOrState(@RequestParam(value = "name", required = false) String name, @RequestParam(value = "state_id", required = false) Long state_id, Pageable pageable) {
+        return cityService.findAllByNameOrState(name, state_id, pageable);
     }
 }
