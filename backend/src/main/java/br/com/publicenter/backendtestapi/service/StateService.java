@@ -18,7 +18,7 @@ public class StateService {
 
     private final StateRepository stateRepository;
 
-    @CacheEvict(value = "stateCache")
+    @CacheEvict(value = {"stateCache"})
     public StateResponse save(State state) {
         return StateResponse.of(stateRepository.save(state));
     }

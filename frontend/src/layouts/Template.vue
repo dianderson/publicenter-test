@@ -69,7 +69,7 @@
                       active
                       clickable
                       v-close-popup
-                      @click="$router.push('/state')"
+                      @click="pageSearchState"
                     >
                       <q-item-section style="color:white">
                         <q-item-label>Pesquisar</q-item-label>
@@ -140,7 +140,6 @@
 </template>
 
 <script>
-
 export default {
   data () {
     return {
@@ -149,6 +148,9 @@ export default {
   },
   methods: {
     logout () {
+    },
+    pageSearchState () {
+      this.$router.push('/state')
     },
     pageCreateState () {
     },

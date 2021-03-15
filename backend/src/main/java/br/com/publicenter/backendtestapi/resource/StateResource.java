@@ -45,7 +45,6 @@ public class StateResource {
     }
 
     @GetMapping
-    @CrossOrigin(origins = "http://localhost:8081")
     public Page<StateResponse> findAll(Pageable pageable) {
         return stateService.findAll(pageable);
     }

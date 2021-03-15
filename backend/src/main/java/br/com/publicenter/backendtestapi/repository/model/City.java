@@ -10,6 +10,7 @@ import javax.validation.constraints.NotBlank;
 
 @Data
 @Entity
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"name", "state_id"})})
 public class City {
 
     @Id

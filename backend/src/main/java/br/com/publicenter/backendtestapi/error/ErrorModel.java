@@ -5,7 +5,7 @@ import lombok.Data;
 import java.time.Instant;
 
 @Data
-public class ModelException {
+public class ErrorModel {
     private Instant timestamp;
     private Integer status;
     private String error;

@@ -73,9 +73,11 @@
 </template>
 
 <script>
+
 import axios from 'axios'
 
 export default {
+  name: 'PageSearchState',
   data () {
     return {
       pagination: {
@@ -113,11 +115,12 @@ export default {
       rows: []
     }
   },
+  mounted () {
+  },
   methods: {
     findAllState () {
       axios.get('http://localhost:8080/state').then(response => {
-        this.rows = response.data
-        console.log(response)
+        this.rows = response.data.content
       })
     }
   },
