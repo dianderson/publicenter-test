@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(value = "/state")
 @RequiredArgsConstructor
+@RequestMapping(value = "/state")
 public class StateResource {
 
     private final StateService stateService;
@@ -63,5 +63,4 @@ public class StateResource {
     public Page<StateResponse> findAllByNameOrCode(@RequestParam(value = "name", required = false) String name, @RequestParam(value = "code", required = false) String code, Pageable pageable) {
         return stateService.findAllByNameOrCode(name, code, pageable);
     }
-
 }

@@ -38,8 +38,12 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/state").permitAll()
                 .antMatchers(HttpMethod.POST, "/auth").permitAll()
+                .antMatchers("/user", "/user/**").hasAuthority("ROLE_ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_MASTER")
+                .antMatchers(HttpMethod.POST, "/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_MASTER")
+                .antMatchers(HttpMethod.PUT, "/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_MASTER")
+                .and().authorizeRequests()
                 .anyRequest().authenticated()
                 .and().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

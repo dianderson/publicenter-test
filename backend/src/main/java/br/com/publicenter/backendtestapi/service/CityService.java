@@ -18,46 +18,46 @@ public class CityService {
 
     private final CityRepository cityRepository;
 
-    @CacheEvict(value = "cityCache", allEntries = true)
+    @CacheEvict(value = {"cityName", "cityState", "cityNameOrState", "cityFindAll", "cityFindById"}, allEntries = true)
     public CityResponse save(City city) {
         return CityResponse.of(cityRepository.save(city));
     }
 
-    @CacheEvict(value = "cityCache", allEntries = true)
+    @CacheEvict(value = {"cityName", "cityState", "cityNameOrState", "cityFindAll", "cityFindById"}, allEntries = true)
     public CityResponse update(City city) {
-        City customerToBeUpdated = cityRepository.findById(city.getId()).orElseThrow(() -> new EntityNotFoundException(String.format("City with id %s not found", city.getId())));
-        customerToBeUpdated.setId(city.getId());
-        customerToBeUpdated.setName(city.getName());
-        customerToBeUpdated.setState(city.getState());
-        return CityResponse.of(cityRepository.save(customerToBeUpdated));
+        City cityToBeUpdated = cityRepository.findById(city.getId()).orElseThrow(() -> new EntityNotFoundException(String.format("City with id %s not found", city.getId())));
+        cityToBeUpdated.setId(city.getId());
+        cityToBeUpdated.setName(city.getName());
+        cityToBeUpdated.setState(city.getState());
+        return CityResponse.of(cityRepository.save(cityToBeUpdated));
     }
 
-    @CacheEvict(value = "cityCache", allEntries = true)
+    @CacheEvict(value = {"cityName", "cityState", "cityNameOrState", "cityFindAll", "cityFindById"}, allEntries = true)
     public void delete(Long id) {
         cityRepository.deleteById(id);
     }
 
-    @Cacheable(value = "cityCache")
+    @Cacheable(value = "cityName")
     public Page<CityResponse> findAllByName(String name, Pageable pageable) {
         return cityRepository.findAllByNameContainingIgnoreCase(name, pageable).map(CityResponse::of);
     }
 
-    @Cacheable(value = "cityCache")
+    @Cacheable(value = "cityState")
     public Page<CityResponse> findAllByState(Long state_id, Pageable pageable) {
         return cityRepository.findAllByStateId(state_id, pageable).map(CityResponse::of);
     }
 
-    @Cacheable(value = "cityCache")
+    @Cacheable(value = "cityNameOrState")
     public Page<CityResponse> findAllByNameOrState(String name, Long state_id, Pageable pageable) {
         return cityRepository.findAllByNameContainingIgnoreCaseOrStateId(name, state_id, pageable).map(CityResponse::of);
     }
 
-    @Cacheable(value = "cityCache")
+    @Cacheable(value = "cityFindAll")
     public Page<CityResponse> findAll(Pageable pageable) {
         return cityRepository.findAll(pageable).map(CityResponse::of);
     }
 
-    @Cacheable(value = "cityCache")
+    @Cacheable(value = "cityFindById")
     public CityResponse findById(Long id) {
         return cityRepository.findById(id)
                 .map(CityResponse::of)
