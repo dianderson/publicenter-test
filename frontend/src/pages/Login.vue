@@ -22,7 +22,7 @@
                 lazy-rules
                 :rules="[
                   val =>
-                    (val && val.length > 0) || 'Insira o usuário cadastrado'
+                    (val && val.length > 0) || 'Insira um usuário cadastrado'
                 ]"
               />
 
@@ -66,6 +66,7 @@
               </div>
             </q-form>
           </div>
+          <q-btn class="bg-blue-grey-5" label="Botão" @click="testeRecuperaToken"/>
         </q-page-container>
       </q-layout>
     </div>
@@ -74,10 +75,8 @@
 
 <script>
 import axios from 'axios'
-import Template from 'src/layouts/Template.vue'
 
 export default {
-  components: { Template },
   data () {
     return {
       userName: '',
@@ -86,27 +85,20 @@ export default {
     }
   },
   mounted () {
-    axios.get('http://localhost:8080/state').then(response => {
-      this.info = response.data.bpi
-    })
   },
 
   methods: {
     onSubmit () {
-      if (this.accept !== true) {
-        this.$q.notify({
-          color: 'red-5',
-          textColor: 'white',
-          icon: 'warning'
-        })
-      } else {
-        this.$q.notify({
-          color: 'green-4',
-          textColor: 'white',
-          icon: 'cloud_done',
-          message: 'Submitted'
-        })
-      }
+      axios.post('http://localhost:8080/auth',
+        {
+          username: this.userName,
+          password: this.password
+        }).then(token => {
+        console.log(token)
+      })
+    },
+    testeRecuperaToken () {
+      console.log(localStorage.getItem('key'))
     },
 
     onReset () {

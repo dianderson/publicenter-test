@@ -146,6 +146,9 @@ export default {
       drawer: false
     }
   },
+  mounted () {
+
+  },
   methods: {
     logout () {
     },

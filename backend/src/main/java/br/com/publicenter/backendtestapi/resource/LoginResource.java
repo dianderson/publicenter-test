@@ -1,8 +1,10 @@
 package br.com.publicenter.backendtestapi.resource;
 
 import br.com.publicenter.backendtestapi.config.MyTokenService;
+import br.com.publicenter.backendtestapi.repository.UserRepository;
 import br.com.publicenter.backendtestapi.resource.dto.request.LoginRequest;
 import br.com.publicenter.backendtestapi.resource.dto.response.LoginResponse;
+import br.com.publicenter.backendtestapi.resource.dto.response.UserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,8 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class LoginResource {
 
+    private final UserRepository userRepository;
+
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -29,12 +33,13 @@ public class LoginResource {
     private MyTokenService myTokenService;
 
     @PostMapping
-    public ResponseEntity<?> authentication(@RequestBody @Valid LoginRequest request) {
+    public ResponseEntity<LoginResponse> authentication(@RequestBody @Valid LoginRequest request) {
         UsernamePasswordAuthenticationToken loginData = request.of();
         try {
             Authentication authentication = authenticationManager.authenticate(loginData);
             String token = myTokenService.createToken(authentication);
-            return ResponseEntity.ok(new LoginResponse(token, "Bearer"));
+            UserResponse user = UserResponse.of(userRepository.findByUsername(loginData.getName()).get());
+            return ResponseEntity.ok(new LoginResponse(user.getUsername(), user.getRoleName(), token, "Bearer"));
         } catch (AuthenticationException ex) {
             return ResponseEntity.badRequest().build();
         }

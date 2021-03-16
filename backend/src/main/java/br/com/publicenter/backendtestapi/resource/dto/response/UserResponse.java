@@ -13,7 +13,7 @@ public class UserResponse {
         var response = new UserResponse();
         response.setId(userCustomer.getId());
         response.setUsername(userCustomer.getUsername());
-        response.setRoleName(userCustomer.getRoles().toString());
+        response.setRoleName(userCustomer.getRoles().get(0).getRoleName());
         return response;
     }
 }
